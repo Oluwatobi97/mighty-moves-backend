@@ -21,14 +21,15 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "build")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
-// Catch-all route to serve React index.html for SPA routing
+// Catch-all handler to serve index.html for any route not handled by the API
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 module.exports = app;
