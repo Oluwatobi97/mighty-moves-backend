@@ -21,7 +21,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// Serve static files from the React app
+// Serve static files from the React build folder
 app.use(express.static(path.join(__dirname, "build")));
 
 app.use("/", indexRouter);
