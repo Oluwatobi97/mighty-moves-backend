@@ -8,6 +8,7 @@ require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var bookingsRouter = require("./routes/bookings");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, "build")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/bookings", bookingsRouter);
 
 // Catch-all handler to serve index.html for any route not handled by the API
 app.get("*", (req, res) => {
