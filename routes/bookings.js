@@ -25,15 +25,30 @@ function generateTrackingId() {
 
 // Create a new booking
 router.post("/", authenticateToken, async (req, res) => {
-  const { service_type, address, date, price } = req.body;
+  const { service_type, address, date, price, details } = req.body;
+
   if (!service_type || !address || !date || !price) {
     return res.status(400).json({ error: "All fields are required." });
   }
+
   try {
     const result = await pool.query(
-      "INSERT INTO bookings (user_id, service_type, address, date, status, price, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *",
-      [req.user.id, service_type, address, date, "Pending", price]
+      `INSERT INTO bookings 
+        (user_id, service_type, address, date, status, price, details, created_at) 
+       VALUES 
+        ($1, $2, $3, $4, $5, $6, $7, NOW()) 
+       RETURNING *`,
+      [
+        req.user.id,
+        service_type,
+        address,
+        date,
+        "Pending",
+        price,
+        details || {},
+      ]
     );
+
     res.status(201).json({ booking: result.rows[0] });
   } catch (err) {
     console.error("Booking creation error:", err);
